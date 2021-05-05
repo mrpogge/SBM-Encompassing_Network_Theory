@@ -1,4 +1,25 @@
-
+######################################################################
+#This is an R script to simulate a network under the Stochastic Block Model in the Encompassing Network perspective. 
+##We simulate a network under the Stochastic Block Model then based on the Fortuin-Kastelyn coloring process we simulate a binary response pattern based on the network. 
+#The function requires the following parameters:
+# p = number of nodes
+# K = number of blocks
+# N = number of observants (cross-sectional)
+# m = number of observation (longitudinal)
+# alpha, beta = hyperparameters of a Beta distribution
+#The function gives a list as an output with the following structure:
+# nodes = number of nodes
+# X = response patterns per observants
+# K = number of blocks
+# N = number of observation
+# alpha, beta = hyperparameters of a Beta distribution
+#Theta = matrix of edge probabilities in every block-pair
+#theta = vector form of the edge probabilites in every block-pair
+#W = adjacency matrix of the resulting network
+#w = a dataframe with binary entries; the rows of the dataframe is the observations; the columns of the dataframe are the observed edges (order of edges given by Index)
+#Index = indexing of the edges, first column the unique number of the given edge, second and third column which node is connected/disconnected from which node
+#z = allocation vector; which node belongs to which block
+########################################################################
 
 SBM_ENT_sim <- function(N, K, p, m, alpha, beta){
   
@@ -69,7 +90,7 @@ SBM_ENT_sim <- function(N, K, p, m, alpha, beta){
                                                              size = 1, 
                                                              prob = prob)
       }
-    } #simulating response patterns based on the coloring process of Fortuin and KAstelyn
+    } #simulating response patterns based on the coloring process of Fortuin and Kastelyn
     X[person == v, ] <- x
   }
   
