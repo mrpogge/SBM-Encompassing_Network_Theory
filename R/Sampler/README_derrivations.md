@@ -1,17 +1,20 @@
-#All about the blocks: Stochastic Block Model in the Encompassing Network Perspective
+# All about the blocks: Stochastic Block Model in the Encompassing Network Perspective
 
-##Project description
+## Project description
 
 This project is an Internship project at the University of Amsterdam, Research Master of Psychology program.
+
 Author: Bence Gergely
+
 Supervisor: Maarten Marsman
+
 Lab: Maarten Marsman, Karoline Huth, Leonhard Volz, Bence Gergely
 
 For the detailed project description see:
 
 https://www.overleaf.com/read/rdjxnqvcpbdx
 
-##Estimation
+## Estimation
 
 We are using MCMC (Gibbs sampler, RJMCMC**) to estimate the SBM in the Encompassing Network Perspective
 
