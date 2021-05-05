@@ -1,0 +1,79 @@
+
+
+SBM_ENT_sim <- function(N, K, p, m, alpha, beta){
+  
+  ###################indexing######################################
+  indexing <- function(p) {
+    index <- matrix(0, nrow = p * (p - 1) / 2, ncol = 3)
+    counter <- 0
+    for(s in 1:(p - 1)) {
+      for(t in (s + 1):p) {
+        counter <- counter + 1
+        index[counter, 1] <- counter
+        index[counter, 2] <- s
+        index[counter, 3] <- t
+      }
+    }
+    return(index)
+  }
+  Index <- indexing(p)
+  
+  ############## creating containers for the variables##############################
+  person <- rep(1:N, each = m)
+  X <- matrix(0, nrow = length(person), ncol = p) #response matrix with -1 +1 entries
+  w <- matrix(0, nrow = N, ncol = choose(p, 2))
+  W <- matrix(0, nrow = p, ncol = p)
+  Theta <- matrix(0, nrow = K, ncol = K)
+  theta <- vector(length = choose(p,2))
+  
+  z <- c(1:K) %*% rmultinom(n = p, size = 1, prob = rep(1, K))
+  z <- as.vector(z)
+  
+  mu <- rnorm(n = p, 0, 1) / sqrt(p)
+  ############## sampling for edge probabilities from a beta distribution with hyperparameters alpha beta ######################
+  diag(Theta) <- rbeta(length(diag(Theta)), alpha, beta)
+  Theta[lower.tri(Theta)] <- Theta[upper.tri(Theta)] <- rep(rbeta(1, beta, alpha), length(Theta[lower.tri(Theta)])) 
+  
+  
+  counter <- 0 
+  for(i in 1:(p-1)) {
+    for(j in (i+1):p) {
+      counter <- counter + 1 
+      w[, counter] <- rbinom(n = N,
+                             size = 1, 
+                             prob = Theta[z[i], z[j]]) 
+      theta[counter] <- Theta[z[i], z[j]] 
+    }
+  }
+  
+  for(v in 1:N) {
+    W <- matrix(0, nrow = p, ncol = p)
+    counter <- 0
+    for(s in 1:(p-1)) {
+      for(t in (s+1):p) {
+        counter <- counter + 1
+        W[s, t] <- W[t, s] <- w[v, counter]
+      }
+    } #with this step we create the adjencency matrix from the individual topologies 
+    
+    G <- graph_from_adjacency_matrix(W, 
+                                     mode = "undirected")
+    network <- igraph::components(G)
+    
+    x <- matrix(0, nrow = m, ncol = p)
+    for(rep in 1:m) {
+      for (c in 1:network$no) {
+        tmp <- sum(mu[network$membership == c])
+        prob <- exp(2* tmp) / (1 + exp(2 * tmp))        
+        x[rep, network$membership == c] <- - 1 + 2 *  rbinom(n = 1,
+                                                             size = 1, 
+                                                             prob = prob)
+      }
+    } #simulating response patterns based on the coloring process of Fortuin and KAstelyn
+    X[person == v, ] <- x
+  }
+  
+  l <- list(X = X, W = W, w = w, z = z, Theta = Theta, theta = theta, N = N, K = K, p = p)
+  return(l)  
+  
+}
