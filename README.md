@@ -21,3 +21,9 @@ We are using MCMC (Gibbs sampler, RJMCMC**) to estimate the SBM in the Encompass
 For detailed derrivation see:
 
 https://www.overleaf.com/read/wtdctssrqxqt
+
+## Contact
+
+Email: gergely.bence98@outlook.com
+
+[Twitter](https://twitter.com/GergelyBence7): @GergelyBence7
