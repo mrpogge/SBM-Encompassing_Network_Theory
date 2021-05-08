@@ -64,7 +64,7 @@ SBM_sim <- function(p, K, N = 1, alpha, beta){
 }
 #### initialisation################################################################
 
-t_network <- SBM_sim(20, 4, 400, 9, 1)
+t_network <- SBM_sim(10, 3, 400, 9, 1)
 K <- t_network$K
 p <- t_network$nodes
 aw <- t_network$w
