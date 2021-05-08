@@ -1,12 +1,12 @@
 ########################################################################################
 #Gibbs sampler for the Stochastic Block Model
-#This R script contains an example of the sampler (currently not in function form) 
+#This R script contains an example of the sampler (currently not in function form)
 #First we create a random SBM network with SBM_sim for further info see SBM-Encompassing_Network_Theory/R/Network_simulation/SBM_sim
 #Then we set the initial values for the sampler, see. 'initialisation'
 
 #################SBM simulation######################################################
 SBM_sim <- function(p, K, N = 1, alpha, beta){
-  
+
   indexing <- function(p) {
     index <- matrix(0, nrow = p * (p - 1) / 2, ncol = 3)
     counter <- 0
@@ -22,32 +22,32 @@ SBM_sim <- function(p, K, N = 1, alpha, beta){
   }
   ########################variable assignment##########################
   Index <- indexing(p)
-  
+
   theta <- vector(length = choose(p, 2)) #edge prob vector form
   Theta <- matrix(0, K, K) #edge probability matrix
   w <- matrix(0, N, choose(p, 2)) #individual topology
   W <- matrix(0, p, p) #adj matrix
-  
-  
+
+
   ###### sampling cluster membership form a multinomial distribution ###############
   z <- c(1:K) %*% rmultinom(n = p, size = 1, prob = rep(1, K))
   z <- as.vector(z)
-  
+
   ############## sampling for edge probabilities from a beta distribution with hyperparameters alpha beta ######################
   diag(Theta) <- rbeta(length(diag(Theta)), alpha, beta)
-  Theta[lower.tri(Theta)] <- Theta[upper.tri(Theta)] <- rep(rbeta(1, beta, alpha), length(Theta[lower.tri(Theta)])) 
-  
-  counter <- 0 
+  Theta[lower.tri(Theta)] <- Theta[upper.tri(Theta)] <- rep(rbeta(1, beta, alpha), length(Theta[lower.tri(Theta)]))
+
+  counter <- 0
   for(i in 1:(p-1)) {
     for(j in (i+1):p) {
-      counter <- counter + 1 
+      counter <- counter + 1
       w[, counter] <- rbinom(n = N,
-                             size = 1, 
-                             prob = Theta[z[i], z[j]]) 
-      theta[counter] <- Theta[z[i], z[j]] 
+                             size = 1,
+                             prob = Theta[z[i], z[j]])
+      theta[counter] <- Theta[z[i], z[j]]
     }
   }
-  
+
   for(v in 1:N) {
     W <- matrix(0, nrow = p, ncol = p)
     counter <- 0
@@ -58,7 +58,7 @@ SBM_sim <- function(p, K, N = 1, alpha, beta){
       }
     }
   }
-  
+
   res <- list(nodes = p, K = K, N = N, alpha = alpha, beta = beta,  Theta = Theta, theta = Theta, W = W, w = w, Index = Index, z = z)
   return(res)
 }
@@ -113,7 +113,7 @@ z_c <- list()
 
 
 for(iter in 1:1000){
-  
+
   ########theta conditional see. SBM-Encompassing_Network_Theory/R/Sampler/README
   for(b in 1:K){
     for(bb in b:K){
@@ -150,35 +150,40 @@ for(iter in 1:1000){
           }
         }
       }
-      aTheta[b, bb] <- rbeta(n = 1, 
+      aTheta[b, bb] <- rbeta(n = 1,
                              shape1 = alpha + w_plus,
-                             shape2 = beta + w_min) 
+                             shape2 = beta + w_min)
       aTheta[bb, b] <- aTheta[b, bb]
     }
   }
-	
+
   #save the current theta matrix to the container ######
   theta_c[[iter]] <- aTheta
-  
+
   ##################Z conditional for details see. SBM-Encompassing_Network_Theory/R/Sampler/README############################
-  w_plus <- colSums(aw) 
-  
+  w_plus <- colSums(aw)
+
   for(nodes in 1:p){
     index1 <- Indexing[Indexing[,2] == nodes, -2]
     index2 <- Indexing[Indexing[,3] == nodes, -3]
     index <- rbind(index1, index2)
-    
+
     prob <- numeric()
     prob_parts <- numeric()
     for(blocks in 1:K){
-      
+
       prob[blocks] <- log(aTheta[blocks, az[index[, 2]]]) %*% w_plus[index[ ,1]]  + log(1-aTheta[blocks, az[index[,2]]]) %*% (N - w_plus[index[, 1]])
-      
+
     }
     prob <- prob - max(prob) - log(sum(exp(prob - max(prob))))
     az[nodes] <- 1:K %*% rmultinom(1, 1, exp(prob))
   }
 
   z_c[[iter]] <- az
-  
+
 }
+
+
+
+
+
