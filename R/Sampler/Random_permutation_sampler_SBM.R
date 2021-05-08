@@ -64,7 +64,7 @@ SBM_sim <- function(p, K, N = 1, alpha, beta){
 }
 #### initialisation################################################################
 
-t_network <- SBM_sim(20, 5, 10, 6, 1)
+t_network <- SBM_sim(10, 3, 400, 9, 1)
 K <- t_network$K
 p <- t_network$nodes
 aw <- t_network$w
@@ -178,6 +178,16 @@ for(iter in 1:1000){
     prob <- prob - max(prob) - log(sum(exp(prob - max(prob))))
     az[nodes] <- 1:K %*% rmultinom(1, 1, exp(prob))
   }
+
+
+  new_vec <- rep(0, length(az))
+  ran_vec <- sample(1:K)
+
+  for(ranper in 1:K){
+    new_vec[az == ranper] <- rep(ran_vec[ranper], length(az[az == ranper]))
+  }
+
+  az <- new_vec
 
   z_c[iter, ] <- az
 
