@@ -8,6 +8,7 @@ for(i in 1:1000){
 }
 
 
+
 par(mfrow = c(2,5))
 for(i in 1:ncol(m)){
   plot(m[,i], type = "l")
@@ -15,7 +16,10 @@ for(i in 1:ncol(m)){
 
 
 
+
 par(mfrow = c(2,5))
 for(i in 1:ncol(m)){
+
   hist(m[,i])
 }
+
