@@ -1,3 +1,6 @@
 library(label.switching)
 
-m
+
+run <- stephens(p_c)
+
+

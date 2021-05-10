@@ -9,7 +9,7 @@ for(i in 1:1000){
 
 
 
-par(mfrow = c(2,5))
+par(mfrow = c(3,5))
 for(i in 1:ncol(m)){
   plot(m[,i], type = "l")
 }
@@ -17,7 +17,7 @@ for(i in 1:ncol(m)){
 
 
 
-par(mfrow = c(2,5))
+par(mfrow = c(3,5))
 for(i in 1:ncol(m)){
 
   hist(m[,i])
@@ -25,7 +25,7 @@ for(i in 1:ncol(m)){
 
 
 
-par(mfrow = c(2,5))
+par(mfrow = c(4,5))
 for(i in 1:p){
 
   hist(z_c[,i])
@@ -69,5 +69,8 @@ for(i in 1:ncol(m)){
 colMeans(m_reordered)
 sort(Theta_true[lower.tri(Theta_true, diag = TRUE)], decreasing = TRUE)
 
-
+m_hat <- matrix(0, K, K)
+m_hat[lower.tri(m_hat, diag = TRUE)] <- colMeans(m_reordered[400:1000,])
+m_hat
+Theta_true
 

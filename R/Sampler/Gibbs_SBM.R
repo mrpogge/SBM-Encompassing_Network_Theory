@@ -110,7 +110,7 @@ diag(aTheta) <-  runif(n = K, min = 0, max = 0.5)
 #################containers############################
 theta_c <- list()
 z_c <- matrix(0, nrow = 1000, ncol = p)
-
+p_c <- array(0, dim = c(1000, p, K))
 
 for(iter in 1:1000){
 
@@ -162,6 +162,7 @@ for(iter in 1:1000){
 
   ##################Z conditional for details see. SBM-Encompassing_Network_Theory/R/Sampler/README############################
   w_plus <- colSums(aw)
+  p_c_m <- matrix(0, p, K)
 
   for(nodes in 1:p){
     index1 <- Indexing[Indexing[,2] == nodes, -2]
@@ -177,8 +178,12 @@ for(iter in 1:1000){
     }
     prob <- prob - max(prob) - log(sum(exp(prob - max(prob))))
     az[nodes] <- 1:K %*% rmultinom(1, 1, exp(prob))
+
+    #save clustering probabilites
+    p_c_m[nodes, ] <- exp(prob) / sum(exp(prob))
   }
 
+  p_c[iter,,] <- p_c_m
   z_c[iter, ] <- az
 
 }
