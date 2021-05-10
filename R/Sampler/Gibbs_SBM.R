@@ -69,6 +69,7 @@ K <- t_network$K
 p <- t_network$nodes
 aw <- t_network$w
 N <- t_network$N
+
 Theta_true <- t_network$Theta
 
 ####indexing#################################################
