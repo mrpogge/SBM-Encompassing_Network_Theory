@@ -1,14 +1,15 @@
 library(label.switching)
 
-relabelR <- function(p_c, theta_c, K, iter){
+relabelR <- function(obj){
   require(label.switching)
 
   #detect relabelling
-  run <- stephens(p_c)
+  run <- stephens(obj$class_prob)
 
   #save the permutations
   perm <- run$permutations
 
+  iter <- obj$iter
   #select the iterations with relabelling
   switch_logic <- logical(length = iter)
   for(switch in 1:iter){
@@ -20,23 +21,32 @@ relabelR <- function(p_c, theta_c, K, iter){
   for(i in 1:iter){
 
     if(switch_logic[i] == TRUE){
-      m_atheta[i, ] <- theta_c[[i]][lower.tri(theta_c[[i]], diag = T)]
+      m_atheta[i, ] <- obj$theta[[i]][lower.tri(obj$theta[[i]], diag = T)]
     } else {
       counter <- 0
       for(s in 1:K) {
         for(t in s:K) {
           counter <- counter + 1
-          m_atheta[i, ][counter] <- theta_c[[i]][perm[i,][s], perm[i,][t]]
+          m_atheta[i, ][counter] <- obj$theta[[i]][perm[i,][s], perm[i,][t]]
         }
       }
     }
   }
-  l <- list(m_atheta, perm)
+  l <- list(theta = m_atheta,
+            z = perm,
+            class_prob = obj$class_prob,
+            iter = obj$iter,
+            N_Blocks = obj$N_Blocks,
+            N_nodes = obj$N_nodes,
+            Sample_size = obj$Sample_size,
+            N_observation = obj$N_observation,
+            Obs_Topology = obj$Obs_Topology)
+  class(l) <- "MCMC_SBM"
   return(l)
 
 }
 
-m_atheta <- relabelR(res$class_prob, theta_c = theta_c, K = K, iter = 1000)
+m_atheta <- relabelR(res)
 
 par(mfrow = c(3,5))
 for(i in 1:ncol(m)){
