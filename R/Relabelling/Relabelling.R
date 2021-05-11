@@ -34,6 +34,7 @@ relabelR <- function(obj){
   }
   l <- list(theta = m_atheta,
             z = perm,
+            z = obj$z,
             class_prob = obj$class_prob,
             iter = obj$iter,
             N_Blocks = obj$N_Blocks,

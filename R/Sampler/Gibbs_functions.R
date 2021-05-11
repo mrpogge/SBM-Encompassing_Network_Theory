@@ -126,6 +126,7 @@ SBM_Gibbs <- function(aw, p, K, N, m = 1, iter){
             Sample_size = N,
             N_observation = m,
             Obs_Topology = aw)
+
   class(l) <- "MCMC_SBM"
   return(l)
 }

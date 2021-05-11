@@ -7,6 +7,7 @@ type <- match.arg(type, choices = c("line_theta", "density_theta", "density_z"))
 #selecting theta from the object
   theta_c <- obj$theta
 
+
   if(class(theta_c) == "list"){
     m <- matrix(0, 1000, (obj$N_Blocks * (obj$N_Blocks+1))/2)
 
@@ -16,8 +17,6 @@ type <- match.arg(type, choices = c("line_theta", "density_theta", "density_z"))
   } else if(any(class(theta_c) == "matrix")){
     m <- theta_c
   }
-
-
 
 #auto.layout function from ENMwizard
 #auto.layout = function(n, layout=T){
@@ -117,6 +116,7 @@ auto.layout = function(n, layout=T){
 
 
 
+##############depriciated
 theta_c <- res$theta
 m <- matrix(0, 1000, (K * (K+1))/2)
 
