@@ -116,7 +116,18 @@ SBM_Gibbs <- function(aw, p, K, N, m = 1, iter){
     z_c[iter, ] <- az
 
   }
-  l <- list(theta = theta_c, z = z_c, class_prob = p_c)
+  #creating MCMC_SBM S3 class
+  l <- list(theta = theta_c,
+            z = z_c,
+            class_prob = p_c,
+            iter = iter,
+            N_Blocks = K,
+            N_nodes = p,
+            Sample_size = N,
+            N_observation = m,
+            Obs_Topology = aw,
+            permutations = NULL)
+  class(l) <- "MCMC_SBM"
   return(l)
 }
 
