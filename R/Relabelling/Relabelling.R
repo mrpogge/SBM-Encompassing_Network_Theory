@@ -10,6 +10,7 @@ relabelR <- function(obj){
   perm <- run$permutations
 
   iter <- obj$iter
+  K <- obj$N_Blocks
   #select the iterations with relabelling
   switch_logic <- logical(length = iter)
   for(switch in 1:iter){
@@ -34,7 +35,6 @@ relabelR <- function(obj){
   }
   l <- list(theta = m_atheta,
             z = perm,
-            z = obj$z,
             class_prob = obj$class_prob,
             iter = obj$iter,
             N_Blocks = obj$N_Blocks,
@@ -47,18 +47,6 @@ relabelR <- function(obj){
 
 }
 
-m_atheta <- relabelR(res)
 
-par(mfrow = c(3,5))
-for(i in 1:ncol(m)){
-  plot(m_atheta[[1]][,i], type = "l")
-}
-
-
-par(mfrow = c(3,5))
-for(i in 1:ncol(m)){
-
-  hist(m_atheta[[1]][,i])
-}
 
 
