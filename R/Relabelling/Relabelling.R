@@ -33,19 +33,32 @@ relabelR <- function(obj){
       }
     }
   }
+
+  #permuting z vector
+  z_relab <- matrix(0, iter, obj$N_nodes)
+  for(perm_rows in 1:nrow(perm)){
+    for(zs in 1:obj$N_nodes){
+      z_relab[perm_rows, zs] <- which(perm[perm_rows, ] == obj$z[perm_rows, zs])
+    }
+  }
+
   l <- list(theta = m_atheta,
-            z = perm,
+            z = z_relab,
             class_prob = obj$class_prob,
             iter = obj$iter,
             N_Blocks = obj$N_Blocks,
             N_nodes = obj$N_nodes,
             Sample_size = obj$Sample_size,
             N_observation = obj$N_observation,
-            Obs_Topology = obj$Obs_Topology)
+            Obs_Topology = obj$Obs_Topology,
+            run = run)
   class(l) <- "MCMC_SBM"
   return(l)
 
 }
+
+
+
 
 
 
