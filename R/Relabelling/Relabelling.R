@@ -1,3 +1,0 @@
-library(label.switching)
-
-m
