@@ -10,17 +10,13 @@ Supervisor: Maarten Marsman
 
 Lab: Maarten Marsman, Karoline Huth, Leonhard Volz, Bence Gergely
 
-For the detailed project description see:
-
-https://www.overleaf.com/read/rdjxnqvcpbdx
-
 ## Estimation
 
 We are using MCMC (Gibbs sampler, RJMCMC**) to estimate the SBM in the Encompassing Network Perspective
 
 For detailed derrivation see:
 
-https://www.overleaf.com/read/wtdctssrqxqt
+https://www.overleaf.com/read/qrcnjcgrbbmt
 
 ## Contact
 
