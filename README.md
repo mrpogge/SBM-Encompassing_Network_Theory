@@ -20,6 +20,4 @@ https://www.overleaf.com/read/qrcnjcgrbbmt
 
 ## Contact
 
-Email: gergely.bence98@outlook.com
-
 [Twitter](https://twitter.com/GergelyBence7): @GergelyBence7
